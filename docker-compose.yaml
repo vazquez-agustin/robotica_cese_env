@@ -1,0 +1,36 @@
+services:
+  ros2-desktop:
+    image: humble-ros-desktop:overlay
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        ROS_DISTRO: jazzy
+      target: base
+    stdin_open: true
+    tty: true
+    network_mode: host
+    ipc: host
+    privileged: true
+    environment:
+       - ROS_DOMAIN_ID=42
+       - DISPLAY=$DISPLAY
+    devices:
+      - "/dev/dri/:/dev/dri/"
+    volumes:
+      - $HOME/.Xauthority:/root/.Xauthority:ro
+
+  sim:
+    extends: ros2-desktop
+    image: humble-ros-desktop:base
+    command: /root/ros2_ws/src/mycobot_ros2/mycobot_bringup/scripts/mycobot_280_gazebo.sh
+
+  moveit-sim:
+    extends: ros2-desktop
+    image: humble-ros-desktop:base
+    command: /root/ros2_ws/src/mycobot_ros2/mycobot_bringup/scripts/mycobot_280_gazebo_and_moveit.sh
+
+  mtc-demos:
+    extends: ros2-desktop
+    image: humble-ros-desktop:base
+    command: /root/ros2_ws/src/mycobot_ros2/mycobot_bringup/scripts/mycobot_280_mtc_demos.sh
