@@ -32,11 +32,45 @@ docker compose build
 ```
 
 ## Para ejecutar una de las simulaciones:
-```
-xhost + && docker compose up [OPTION] --force-recreate
-```
 
 Las opciones disponibles son:
-- `sim`: empezar la simulación del brazo únicamente.
-- `moveit-sim`: empezar la simulación y el brazo configurado en `moveit`.
-- `mtc-demos`: ejecuta la demo con el `moveit_task_constructor`.
+
+### Mycobot 280
+
+```
+$ xhost + && docker compose up  moveit-sim-280 --force-recreate
+```
+
+Deberia inmediatamente inicializar la simulacion y el panel de control de RViz como se ve:
+
+![](docs/mycobot_280_demo.gif)
+
+### Mycobot 320
+
+```
+$ xhost + && docker compose up  moveit-sim-320 --force-recreate
+```
+
+Deberia inmediatamente inicializar la simulacion y el panel de control de RViz como se ve:
+
+![](docs/mycobot_320_demo.gif)
+
+## Como usar este repositorio para desarrollo:
+
+Recontruimos la imagen e inicializamos una nueva imagen:
+```
+$ docker compose build --no-cache
+$ xhost + && docker compose up dev --force-recreate
+```
+
+En una terminal separada nos introducimos en el container.
+```
+$ docker exec -it robotica_cese_env-dev-1 /bin/bash
+```
+
+En esta forma, cualquier cambio en la carpeta `./src/third-party/mycobot-ros2` se reflejan en la carpeta `/root/ros2_ws/src/mycobot_ros2` adentro de la imagen.
+Asi podemos hacer cualquier cambio que querramos dentro de esa carpeta y ejecutar los cambios en el sistema con el comando desde la segunda terminal:
+
+```
+$ ROBOT_MODEL=mycobot_320 /root/ros2_ws/src/mycobot_ros2/mycobot_bringup/scripts/mycobot_gazebo_and_moveit.sh
+```
