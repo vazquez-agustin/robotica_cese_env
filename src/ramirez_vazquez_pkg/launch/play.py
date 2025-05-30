@@ -14,14 +14,13 @@ from launch.actions import ExecuteProcess
 def generate_launch_description():
 
     # Definicion de Path
-
     rviz_config = os.path.join(get_package_share_directory('ramirez_vazquez_pkg'), 'config', 'rosbag.rviz')
     rqt_persp = os.path.join(get_package_share_directory('ramirez_vazquez_pkg'), 'config', 'rosbag.perspective')
 
     bag_path_arg = DeclareLaunchArgument(
     name='bag_path',
     default_value=os.path.join('/root', 'ros2_ws', 'src', 'ramirez_vazquez_pkg', 'r2b_lounge'),
-    description='Rosbag file to play.')
+    description='Archivo rosbag a simular.')
     bag_path = LaunchConfiguration('bag_path')
 
 
@@ -42,11 +41,8 @@ def generate_launch_description():
 
     # Add any actions
     ld.add_action(bag_path_arg)
-    ld.add_action(bag_message)
     ld.add_action(bag_node)    
-    ld.add_action(rqt_message)
     ld.add_action(rqt_node)
-    ld.add_action(rviz_message)
     ld.add_action(rviz_node)
 
     return ld
