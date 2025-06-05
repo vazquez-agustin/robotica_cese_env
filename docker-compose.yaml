@@ -1,12 +1,6 @@
 services:
   ros2-desktop:
-    image: humble-ros-desktop:overlay
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-      args:
-        ROS_DISTRO: jazzy
-      target: base
+    image: shokman/intro_robotica_cese:latest
     stdin_open: true
     tty: true
     network_mode: host
@@ -22,28 +16,24 @@ services:
 
   moveit-sim-280:
     extends: ros2-desktop
-    image: humble-ros-desktop:base
     environment:
         - ROBOT_MODEL=mycobot_280
     command: /root/ros2_ws/src/third-party/mycobot-ros2/mycobot_bringup/scripts/mycobot_gazebo_and_moveit.sh
 
   moveit-sim-320:
     extends: ros2-desktop
-    image: humble-ros-desktop:base
     environment:
         - ROBOT_MODEL=mycobot_320
     command: /root/ros2_ws/src/third-party/mycobot-ros2/mycobot_bringup/scripts/mycobot_gazebo_and_moveit.sh
 
   robot-description:
     extends: ros2-desktop
-    image: humble-ros-desktop:base
     environment:
         - ROBOT_MODEL=mycobot_320
     command: ros2 launch clase6 robot_description.launch.py
 
   dev:
     extends: ros2-desktop
-    image: humble-ros-desktop:base
     command: /bin/bash
     volumes:
       - ./src:/root/ros2_ws/src
